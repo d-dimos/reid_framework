@@ -31,6 +31,6 @@ test:
   batch_size: 300
   dist_metric: 'euclidean'
   normalize_feature: False
-  evaluate: True
+  evaluate: False
   eval_freq: 10
   rerank: False

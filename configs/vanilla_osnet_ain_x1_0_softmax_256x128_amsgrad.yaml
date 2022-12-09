@@ -10,10 +10,10 @@ data:
   width: 128
   combineall: False
   transforms: ['random_flip', 'color_jitter']
-  save_dir: 'log/vanilla_osnet_ain_x1_0_duke2market_triplet'
+  save_dir: 'log/vanilla_osnet_ain_x1_0_duke2market_softmax'
 
 loss:
-  name: 'triplet'
+  name: 'softmax'
   softmax:
     label_smooth: True
 

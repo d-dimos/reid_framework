@@ -1,5 +1,5 @@
 model:
-  name: 'osnet_ibn_x1_0'
+  name: 'osnet_ain_x1_0'
   pretrained: True
 
 data:

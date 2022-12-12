@@ -12,7 +12,7 @@ def readme():
 
 
 def find_version():
-    version_file = 'torchreid/__init__.py'
+    version_file = 'torchreid_uncertain/__init__.py'
     with open(version_file, 'r') as f:
         exec(compile(f.read(), version_file, 'exec'))
     return locals()['__version__']
@@ -28,8 +28,8 @@ def numpy_include():
 
 ext_modules = [
     Extension(
-        'torchreid.metrics.rank_cylib.rank_cy',
-        ['torchreid/metrics/rank_cylib/rank_cy.pyx'],
+        'torchreid_uncertain.metrics.rank_cylib.rank_cy',
+        ['torchreid_uncertain/metrics/rank_cylib/rank_cy.pyx'],
         include_dirs=[numpy_include()],
     )
 ]
@@ -43,7 +43,7 @@ def get_requirements(filename='requirements.txt'):
 
 
 setup(
-    name='torchreid',
+    name='torchreid_uncertain',
     version=find_version(),
     description='A library for deep learning person re-ID in PyTorch',
     author='Kaiyang Zhou',

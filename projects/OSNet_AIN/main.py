@@ -6,8 +6,8 @@ import argparse
 import torch
 import torch.nn as nn
 
-import torchreid
-from torchreid.utils import (
+import torchreid_uncertain
+from torchreid_uncertain.utils import (
     Logger, check_isfile, set_random_seed, collect_env_info,
     resume_from_checkpoint, compute_model_complexity
 )
@@ -93,7 +93,7 @@ def main():
     if cfg.use_gpu:
         torch.backends.cudnn.benchmark = True
 
-    datamanager = torchreid.data.ImageDataManager(**imagedata_kwargs(cfg))
+    datamanager = torchreid_uncertain.data.ImageDataManager(**imagedata_kwargs(cfg))
 
     print('Building model: {}'.format(cfg.model.name))
     model = osnet_models.build_model(
@@ -107,8 +107,8 @@ def main():
     if cfg.use_gpu:
         model = nn.DataParallel(model).cuda()
 
-    optimizer = torchreid.optim.build_optimizer(model, **optimizer_kwargs(cfg))
-    scheduler = torchreid.optim.build_lr_scheduler(
+    optimizer = torchreid_uncertain.optim.build_optimizer(model, **optimizer_kwargs(cfg))
+    scheduler = torchreid_uncertain.optim.build_lr_scheduler(
         optimizer, **lr_scheduler_kwargs(cfg)
     )
 

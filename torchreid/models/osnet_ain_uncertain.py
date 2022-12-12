@@ -662,3 +662,23 @@ def osnet_ain_x0_25(
     if pretrained:
         init_pretrained_weights(model, key='osnet_ain_x0_25')
     return model
+
+
+def osnet_uain_x1_0(
+        num_classes=1000, pretrained=True, loss='softmax', **kwargs
+):
+    model = OSNet(
+        num_classes,
+        blocks=[
+            [OSBlockINin, OSBlockINin], [OSBlock, OSBlockINin],
+            [OSBlockINin, OSBlock]
+        ],
+        layers=[2, 2, 2],
+        channels=[64, 256, 384, 512],
+        loss=loss,
+        conv1_IN=True,
+        **kwargs
+    )
+    if pretrained:
+        init_pretrained_weights(model, key='osnet_ain_x1_0')
+    return model

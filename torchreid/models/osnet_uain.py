@@ -7,7 +7,7 @@ from torch.distributions.beta import Beta
 from torch.distributions.bernoulli import Bernoulli
 
 __all__ = [
-    'osnet_ain_x1_0', 'osnet_ain_x0_75', 'osnet_ain_x0_5', 'osnet_ain_x0_25'
+    'osnet_ain_x1_0', 'osnet_ain_x0_75', 'osnet_ain_x0_5', 'osnet_ain_x0_25', 'osnet_uain_x1_0'
 ]
 
 pretrained_urls = {

@@ -21,7 +21,7 @@ from .resnet_ibn_a import *
 from .resnet_ibn_b import *
 from .shufflenetv2 import *
 from .inceptionresnetv2 import *
-from .osnet_uain import *
+from .osnet_uain import osnet_uain_x1_0
 
 __model_factory = {
     # image classification models

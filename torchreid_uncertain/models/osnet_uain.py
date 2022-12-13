@@ -436,32 +436,32 @@ class OSNet(nn.Module):
 
     def featuremaps(self, x, mix=True, eval=False):
 
-        in_size = x.size(0)
-        noise1 = F.softplus(self.noise(self.conv1_mean(x), self.conv1_var(x), eval=eval))
-        conv1 = self.conv1(x)
-        out1_o = self.relu1(self.bn1(conv1))
-        out1_noise = self.relu1(self.bn1(conv1 + noise1))
-
-        conv1_mean, conv1_var = self.noise(self.conv1_mean(x), self.conv1_var(x), return_std=True)
-        conv_var_cat = torch.cat([conv1_mean, conv1_var], dim=1)
-
-        # conv_var_cat = torch.cat([conv1_mean.reshape(in_size, -1), conv1_var.reshape(in_size, -1)], dim=1)  #.cuda()
-        conv_var_cat = self.global_avgpool_param(self.conv1x1_param(conv_var_cat.detach()))
-
-        absmo = self.fc1var(conv_var_cat.reshape(in_size, self.dist_param_dim))
-        a, b, smo = torch.split(absmo, 1, dim=1)
-        smo = self.sig1var(smo)
-        m = Bernoulli(smo)
-        mask = m.sample().bool()
-
-        if mix:
-            a, b = 1 + torch.clamp(a, -0.5, 1), 1 + torch.clamp(b, -0.5, 1)
-            beta = Beta(a.unsqueeze(-1).unsqueeze(-1), b.unsqueeze(-1).unsqueeze(-1))
-            lam = beta.sample()
-            x = lam * out1_o.detach() + (1 - lam) * out1_noise.detach()
-        else:
-            lam = 0
-            x = out1_noise
+        # in_size = x.size(0)
+        # noise1 = F.softplus(self.noise(self.conv1_mean(x), self.conv1_var(x), eval=eval))
+        # conv1 = self.conv1(x)
+        # out1_o = self.relu1(self.bn1(conv1))
+        # out1_noise = self.relu1(self.bn1(conv1 + noise1))
+        #
+        # conv1_mean, conv1_var = self.noise(self.conv1_mean(x), self.conv1_var(x), return_std=True)
+        # conv_var_cat = torch.cat([conv1_mean, conv1_var], dim=1)
+        #
+        # # conv_var_cat = torch.cat([conv1_mean.reshape(in_size, -1), conv1_var.reshape(in_size, -1)], dim=1)  #.cuda()
+        # conv_var_cat = self.global_avgpool_param(self.conv1x1_param(conv_var_cat.detach()))
+        #
+        # absmo = self.fc1var(conv_var_cat.reshape(in_size, self.dist_param_dim))
+        # a, b, smo = torch.split(absmo, 1, dim=1)
+        # smo = self.sig1var(smo)
+        # m = Bernoulli(smo)
+        # mask = m.sample().bool()
+        #
+        # if mix:
+        #     a, b = 1 + torch.clamp(a, -0.5, 1), 1 + torch.clamp(b, -0.5, 1)
+        #     beta = Beta(a.unsqueeze(-1).unsqueeze(-1), b.unsqueeze(-1).unsqueeze(-1))
+        #     lam = beta.sample()
+        #     x = lam * out1_o.detach() + (1 - lam) * out1_noise.detach()
+        # else:
+        #     lam = 0
+        #     x = out1_noise
 
         # x = self.conv1(x)
         x = self.maxpool(x)

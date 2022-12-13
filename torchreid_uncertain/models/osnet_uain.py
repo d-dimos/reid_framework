@@ -436,7 +436,6 @@ class OSNet(nn.Module):
     def featuremaps(self, x, mix=True, eval=False):
 
         in_size = x.size(0)
-        print(x.size())
         noise1 = F.softplus(self.noise(self.conv1_mean(x), self.conv1_var(x), eval=eval))
         conv1 = self.conv1(x)
         out1_o = self.relu1(self.bn1(conv1))

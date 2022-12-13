@@ -442,6 +442,7 @@ class OSNet(nn.Module):
         out1_noise = self.relu1(self.bn1(conv1 + noise1))
 
         conv1_mean, conv1_var = self.noise(self.conv1_mean(x), self.conv1_var(x), return_std=True)
+        print(conv1_mean.size(), conv1_var.size())
         conv_var_cat = torch.cat([conv1_mean, conv1_var], dim=1)
         print(conv_var_cat.size())
 

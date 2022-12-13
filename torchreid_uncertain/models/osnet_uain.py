@@ -443,6 +443,7 @@ class OSNet(nn.Module):
 
         conv1_mean, conv1_var = self.noise(self.conv1_mean(x), self.conv1_var(x), return_std=True)
         conv_var_cat = torch.cat([conv1_mean, conv1_var], dim=1)
+        print(conv_var_cat.size())
 
         # conv_var_cat = torch.cat([conv1_mean.reshape(in_size, -1), conv1_var.reshape(in_size, -1)], dim=1)  #.cuda()
         conv_var_cat = self.conv1x1_param(conv_var_cat.detach())

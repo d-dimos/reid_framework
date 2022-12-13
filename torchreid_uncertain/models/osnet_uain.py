@@ -436,6 +436,7 @@ class OSNet(nn.Module):
     def featuremaps(self, x, mix=True, eval=False):
 
         in_size = x.size(0)
+        print(x.size())
         noise1 = F.softplus(self.noise(self.conv1_mean(x), self.conv1_var(x), eval=eval))
         conv1 = self.conv1(x)
         out1_o = self.relu1(self.bn1(conv1))
@@ -443,8 +444,8 @@ class OSNet(nn.Module):
 
         conv1_mean, conv1_var = self.noise(self.conv1_mean(x), self.conv1_var(x), return_std=True)
         conv_var_cat = torch.cat([conv1_mean.reshape(in_size, -1), conv1_var.reshape(in_size, -1)], dim=1).cuda()
-        conv_var_cat = self.conv1x1_param(conv_var_cat)
-        conv_var_cat = self.global_avgpool_param(conv_var_cat)
+        # conv_var_cat = self.conv1x1_param(conv_var_cat)
+        # conv_var_cat = self.global_avgpool_param(conv_var_cat)
 
         absmo = self.fc1var(conv_var_cat.detach())
         a, b, smo = torch.split(absmo, 1, dim=1)

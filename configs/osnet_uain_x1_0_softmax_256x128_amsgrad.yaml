@@ -28,7 +28,7 @@ train:
   stepsize: [60]
 
 test:
-  batch_size: 300
+  batch_size: 128
   dist_metric: 'euclidean'
   normalize_feature: False
   evaluate: False

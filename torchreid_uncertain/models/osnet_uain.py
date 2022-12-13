@@ -446,7 +446,7 @@ class OSNet(nn.Module):
         # conv_var_cat = self.conv1x1_param(conv_var_cat)
         # conv_var_cat = self.global_avgpool_param(conv_var_cat)
 
-        absmo = self.fc1var(conv_var_cat) #.detach())
+        absmo = self.fc1var(conv_var_cat.detach())
         a, b, smo = torch.split(absmo, 1, dim=1)
         smo = self.sig1var(smo)
         m = Bernoulli(smo)
@@ -472,7 +472,7 @@ class OSNet(nn.Module):
         return x
 
     def forward(self, x, return_featuremaps=False):
-        x = self.featuremaps(x)
+        x = self.featuremaps(x.cuda())
         if return_featuremaps:
             return x
         v = self.global_avgpool(x)

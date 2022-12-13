@@ -443,10 +443,8 @@ class OSNet(nn.Module):
 
         conv1_mean, conv1_var = self.noise(self.conv1_mean(x), self.conv1_var(x), return_std=True)
         conv_var_cat = torch.cat([conv1_mean.reshape(in_size, -1), conv1_var.reshape(in_size, -1)], dim=1).cuda()
-        # conv_var_cat = self.conv1x1_param(conv_var_cat)
-        # conv_var_cat = self.global_avgpool_param(conv_var_cat)
-
-        print(conv_var_cat.detach().device)
+        conv_var_cat = self.conv1x1_param(conv_var_cat)
+        conv_var_cat = self.global_avgpool_param(conv_var_cat)
 
         absmo = self.fc1var(conv_var_cat.detach())
         a, b, smo = torch.split(absmo, 1, dim=1)

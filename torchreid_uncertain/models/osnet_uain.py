@@ -359,7 +359,7 @@ class OSNet(nn.Module):
         self.classifier = nn.Linear(self.feature_dim, num_classes)
 
         # distribution parameters NN
-        self.conv1x1_param = Conv1x1(channels[0], dist_param_dim)
+        self.conv1x1_param = Conv1x1(2*channels[0], dist_param_dim)
         self.global_avgpool_param = nn.AdaptiveAvgPool2d(1)
         self.fc1var = nn.Linear(dist_param_dim, 3)
         self.sig1var = nn.Sigmoid()
@@ -442,7 +442,9 @@ class OSNet(nn.Module):
         out1_noise = self.relu1(self.bn1(conv1 + noise1))
 
         conv1_mean, conv1_var = self.noise(self.conv1_mean(x), self.conv1_var(x), return_std=True)
-        conv_var_cat = torch.cat([conv1_mean.reshape(in_size, -1), conv1_var.reshape(in_size, -1)], dim=1) #.cuda()
+        conv_var_cat = torch.cat([conv1_mean, conv1_var], dim=1)
+
+        # conv_var_cat = torch.cat([conv1_mean.reshape(in_size, -1), conv1_var.reshape(in_size, -1)], dim=1)  #.cuda()
         conv_var_cat = self.conv1x1_param(conv_var_cat.detach())
         conv_var_cat = self.global_avgpool_param(conv_var_cat)
 

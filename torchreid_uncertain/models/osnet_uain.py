@@ -442,7 +442,7 @@ class OSNet(nn.Module):
         out1_noise = self.relu1(self.bn1(conv1 + noise1))
 
         conv1_mean, conv1_var = self.noise(self.conv1_mean(x), self.conv1_var(x), return_std=True)
-        conv_var_cat = torch.cat([conv1_mean.reshape(in_size, -1), conv1_var.reshape(in_size, -1)], dim=1).cuda()
+        conv_var_cat = torch.cat([conv1_mean.reshape(in_size, -1), conv1_var.reshape(in_size, -1)], dim=1) #.cuda()
         # conv_var_cat = self.conv1x1_param(conv_var_cat)
         # conv_var_cat = self.global_avgpool_param(conv_var_cat)
 
@@ -472,7 +472,7 @@ class OSNet(nn.Module):
         return x
 
     def forward(self, x, return_featuremaps=False):
-        x = self.featuremaps(x.cuda())
+        x = self.featuremaps(x)
         if return_featuremaps:
             return x
         v = self.global_avgpool(x)

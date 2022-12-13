@@ -448,9 +448,7 @@ class OSNet(nn.Module):
         conv_var_cat = self.conv1x1_param(conv_var_cat.detach())
         conv_var_cat = self.global_avgpool_param(conv_var_cat)
 
-        print(conv_var_cat.size())
-
-        absmo = self.fc1var(conv_var_cat)
+        absmo = self.fc1var(conv_var_cat.reshape(in_size, 128))
         a, b, smo = torch.split(absmo, 1, dim=1)
         smo = self.sig1var(smo)
         m = Bernoulli(smo)

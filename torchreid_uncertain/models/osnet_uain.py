@@ -458,7 +458,7 @@ class OSNet(nn.Module):
             a, b = 1 + torch.clamp(a, -0.5, 1), 1 + torch.clamp(b, -0.5, 1)
             beta = Beta(a.unsqueeze(-1).unsqueeze(-1), b.unsqueeze(-1).unsqueeze(-1))
             lam = beta.sample()
-            x = out1_noise #lam * out1_o.detach() + (1 - lam) * out1_noise.detach()
+            x = lam * out1_o.detach() + (1 - lam) * out1_noise.detach()
         else:
             lam = 0
             x = out1_noise

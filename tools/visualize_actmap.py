@@ -12,8 +12,8 @@ import cv2
 import torch
 from torch.nn import functional as F
 
-import torchreid_uncertain
-from torchreid_uncertain.utils import (
+import torchreid
+from torchreid.utils import (
     check_isfile, mkdir_if_missing, load_pretrained_weights
 )
 
@@ -140,7 +140,7 @@ def main():
 
     use_gpu = torch.cuda.is_available()
 
-    datamanager = torchreid_uncertain.data.ImageDataManager(
+    datamanager = torchreid.data.ImageDataManager(
         root=args.root,
         sources=args.dataset,
         height=args.height,
@@ -152,7 +152,7 @@ def main():
     )
     test_loader = datamanager.test_loader
 
-    model = torchreid_uncertain.models.build_model(
+    model = torchreid.models.build_model(
         name=args.model,
         num_classes=datamanager.num_train_pids,
         use_gpu=use_gpu

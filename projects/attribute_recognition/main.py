@@ -9,13 +9,13 @@ import warnings
 import torch
 import torch.nn as nn
 
-import torchreid_uncertain
-from torchreid_uncertain.utils import (
+import torchreid
+from torchreid.utils import (
     Logger, AverageMeter, check_isfile, open_all_layers, save_checkpoint,
     set_random_seed, collect_env_info, open_specified_layers,
     load_pretrained_weights, compute_model_complexity
 )
-from torchreid_uncertain.data.transforms import (
+from torchreid.data.transforms import (
     Resize, Compose, ToTensor, Normalize, Random2DTranslation,
     RandomHorizontalFlip
 )
@@ -170,10 +170,10 @@ def main():
         test(model, testloader, attr_dict, use_gpu)
         return
 
-    optimizer = torchreid_uncertain.optim.build_optimizer(
+    optimizer = torchreid.optim.build_optimizer(
         model, **optimizer_kwargs(args)
     )
-    scheduler = torchreid_uncertain.optim.build_lr_scheduler(
+    scheduler = torchreid.optim.build_lr_scheduler(
         optimizer, **lr_scheduler_kwargs(args)
     )
 

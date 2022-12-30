@@ -13,7 +13,7 @@ $ python compute_mean_std.py $DATA market1501
 """
 import argparse
 
-import torchreid_uncertain
+import torchreid
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
     parser.add_argument('sources', type=str)
     args = parser.parse_args()
 
-    datamanager = torchreid_uncertain.data.ImageDataManager(
+    datamanager = torchreid.data.ImageDataManager(
         root=args.root,
         sources=args.sources,
         targets=None,

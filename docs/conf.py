@@ -19,11 +19,11 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = u'torchreid_uncertain'
+project = u'torchreid'
 copyright = u'2019, Kaiyang Zhou'
 author = u'Kaiyang Zhou'
 
-version_file = '../torchreid_uncertain/__init__.py'
+version_file = '../torchreid/__init__.py'
 with open(version_file, 'r') as f:
     exec(compile(f.read(), version_file, 'exec'))
 __version__ = locals()['__version__']
@@ -136,7 +136,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (
-        master_doc, 'torchreid_uncertain.tex', u'torchreid_uncertain Documentation',
+        master_doc, 'torchreid.tex', u'torchreid Documentation',
         u'Kaiyang Zhou', 'manual'
     ),
 ]
@@ -146,7 +146,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'torchreid_uncertain', u'torchreid_uncertain Documentation', [author], 1)
+    (master_doc, 'torchreid', u'torchreid Documentation', [author], 1)
 ]
 
 # -- Options for Texinfo output ----------------------------------------------
@@ -156,8 +156,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (
-        master_doc, 'torchreid_uncertain', u'torchreid_uncertain Documentation', author,
-        'torchreid_uncertain', 'One line description of project.', 'Miscellaneous'
+        master_doc, 'torchreid', u'torchreid Documentation', author,
+        'torchreid', 'One line description of project.', 'Miscellaneous'
     ),
 ]
 

@@ -289,6 +289,7 @@ class Engine(object):
     def forward_backward(self, data):
         raise NotImplementedError
 
+    @torch.no_grad()
     def test(
         self,
         dist_metric='euclidean',
@@ -361,7 +362,7 @@ class Engine(object):
     ):
         batch_time = AverageMeter()
 
-        def _feature_extraction(data_loader, uncertainty=False):
+        def _feature_extraction(data_loader):
             f_, pids_, camids_ = [], [], []
             for batch_idx, data in enumerate(data_loader):
                 imgs, pids, camids = self.parse_data_for_eval(data)

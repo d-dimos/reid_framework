@@ -4,7 +4,7 @@ This repo implements [Deep Mutual Learning (CVPR'18)](https://zpascal.net/cvpr20
 
 We used this code in our [OSNet](https://arxiv.org/pdf/1905.00953.pdf) paper (see Supp. B). The training command to reproduce the result of "triplet + DML" (Table 12f in the paper) is
 ```bash
-python main.py \
+python main_prev.py \
 --config-file im_osnet_x1_0_dml_256x128_amsgrad_cosine.yaml \
 --root $DATA
 ```

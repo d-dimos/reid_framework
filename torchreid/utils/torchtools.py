@@ -198,7 +198,7 @@ def open_specified_layers(model, open_layers):
         >>> open_layers = ['fc', 'classifier']
         >>> open_specified_layers(model, open_layers)
     """
-    if isinstance(model, nn.DataParallel):
+    if isinstance(model, nn.DataParallel) or isinstance(model, metann.leaner.Learner):
         model = model.module
 
     if isinstance(open_layers, str):

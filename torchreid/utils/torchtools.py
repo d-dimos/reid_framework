@@ -7,6 +7,7 @@ from functools import partial
 from collections import OrderedDict
 import torch
 import torch.nn as nn
+import metann
 
 from .tools import mkdir_if_missing
 

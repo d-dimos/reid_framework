@@ -94,17 +94,17 @@ def get_default_config():
     cfg.loss.triplet.weight_x = 0. # weight to balance cross entropy loss
 
     # test
-    cfg.test = CN()
-    cfg.test.batch_size = 100
-    cfg.test.dist_metric = 'euclidean' # distance metric, ['euclidean', 'cosine']
-    cfg.test.normalize_feature = False # normalize feature vectors before computing distance
-    cfg.test.ranks = [1, 5, 10, 20] # cmc ranks
-    cfg.test.evaluate = False # test only
-    cfg.test.eval_freq = -1 # evaluation frequency (-1 means to only test after training)
-    cfg.test.start_eval = 0 # start to evaluate after a specific epoch
-    cfg.test.rerank = False # use person re-ranking
-    cfg.test.visrank = False # visualize ranked results (only available when cfg.test.evaluate=True)
-    cfg.test.visrank_topk = 10 # top-k ranks to visualize
+    cfg.evaluate = CN()
+    cfg.evaluate.batch_size = 100
+    cfg.evaluate.dist_metric = 'euclidean' # distance metric, ['euclidean', 'cosine']
+    cfg.evaluate.normalize_feature = False # normalize feature vectors before computing distance
+    cfg.evaluate.ranks = [1, 5, 10, 20] # cmc ranks
+    cfg.evaluate.evaluate = False # test only
+    cfg.evaluate.eval_freq = -1 # evaluation frequency (-1 means to only test after training)
+    cfg.evaluate.start_eval = 0 # start to evaluate after a specific epoch
+    cfg.evaluate.rerank = False # use person re-ranking
+    cfg.evaluate.visrank = False # visualize ranked results (only available when cfg.test.evaluate=True)
+    cfg.evaluate.visrank_topk = 10 # top-k ranks to visualize
 
     return cfg
 
@@ -125,7 +125,7 @@ def imagedata_kwargs(cfg):
         'combineall': cfg.data.combineall,
         'load_train_targets': cfg.data.load_train_targets,
         'batch_size_train': cfg.train.batch_size,
-        'batch_size_test': cfg.test.batch_size,
+        'batch_size_test': cfg.evaluate.batch_size,
         'workers': cfg.data.workers,
         'num_instances': cfg.sampler.num_instances,
         'num_cams': cfg.sampler.num_cams,
@@ -153,7 +153,7 @@ def videodata_kwargs(cfg):
         'split_id': cfg.data.split_id,
         'combineall': cfg.data.combineall,
         'batch_size_train': cfg.train.batch_size,
-        'batch_size_test': cfg.test.batch_size,
+        'batch_size_test': cfg.evaluate.batch_size,
         'workers': cfg.data.workers,
         'num_instances': cfg.sampler.num_instances,
         'num_cams': cfg.sampler.num_cams,
@@ -198,15 +198,15 @@ def engine_run_kwargs(cfg):
         'start_epoch': cfg.train.start_epoch,
         'fixbase_epoch': cfg.train.fixbase_epoch,
         'open_layers': cfg.train.open_layers,
-        'start_eval': cfg.test.start_eval,
-        'eval_freq': cfg.test.eval_freq,
-        'test_only': cfg.test.evaluate,
+        'start_eval': cfg.evaluate.start_eval,
+        'eval_freq': cfg.evaluate.eval_freq,
+        'test_only': cfg.evaluate.evaluate,
         'print_freq': cfg.train.print_freq,
-        'dist_metric': cfg.test.dist_metric,
-        'normalize_feature': cfg.test.normalize_feature,
-        'visrank': cfg.test.visrank,
-        'visrank_topk': cfg.test.visrank_topk,
+        'dist_metric': cfg.evaluate.dist_metric,
+        'normalize_feature': cfg.evaluate.normalize_feature,
+        'visrank': cfg.evaluate.visrank,
+        'visrank_topk': cfg.evaluate.visrank_topk,
         'use_metric_cuhk03': cfg.cuhk03.use_metric_cuhk03,
-        'ranks': cfg.test.ranks,
-        'rerank': cfg.test.rerank
+        'ranks': cfg.evaluate.ranks,
+        'rerank': cfg.evaluate.rerank
     }

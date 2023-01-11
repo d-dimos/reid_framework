@@ -73,7 +73,7 @@ def main():
     cfg.merge_from_list(args.opts)
     set_random_seed(cfg.train.seed)
 
-    log_name = 'test.log' if cfg.test.evaluate else 'train.log'
+    log_name = 'test.log' if cfg.evaluate.evaluate else 'train.log'
     log_name += time.strftime('-%Y-%m-%d-%H-%M-%S')
     sys.stdout = Logger(osp.join(cfg.data.save_dir, log_name))
 

@@ -65,7 +65,6 @@ __model_factory = {
     'hacnn': HACNN,
     'pcb_p6': pcb_p6,
     'pcb_p4': pcb_p4,
-    'osnet_uain_x1_0': osnet_uain_x1_0,
     'mlfn': mlfn,
     'osnet_x1_0': osnet_x1_0,
     'osnet_x0_75': osnet_x0_75,

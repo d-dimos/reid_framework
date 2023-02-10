@@ -24,6 +24,7 @@ class PixMixDataset(torch.utils.data.Dataset):
 
         rnd_idx = np.random.choice(len(self.mixing_set))
         mixing_pic, _ = self.mixing_set[rnd_idx]
+        print(mixing_pic.shape)
         trans = transforms.ToPILImage()
         x = trans(x)
         return pixmix(self.args, x, mixing_pic, self.preprocess), y
@@ -47,8 +48,6 @@ def pixmix(args, orig, mixing_pic, preprocess):
             aug_image_copy = tensorize(mixing_pic)
 
         mixed_op = np.random.choice(mixings)
-        print(mixed.shape)
-        print(aug_image_copy.shape)
         mixed = mixed_op(mixed, aug_image_copy, args.beta)
         mixed = torch.clip(mixed, 0, 1)
 

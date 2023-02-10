@@ -193,24 +193,22 @@ class ImageDataManager(DataManager):
         )
 
         print('=> Loading train (source) dataset')
-        trainset = []
-        for name in self.sources:
-            trainset_ = init_image_dataset(
-                name,
-                args,
-                apply_pixmix=True,
-                transform=self.transform_tr,
-                k_tfm=k_tfm,
-                mode='train',
-                combineall=combineall,
-                root=root,
-                split_id=split_id,
-                cuhk03_labeled=cuhk03_labeled,
-                cuhk03_classic_split=cuhk03_classic_split,
-                market1501_500k=market1501_500k
-            )
-            trainset.append(trainset_)
-        trainset = sum(trainset)
+        trainset = init_image_dataset(self.sources[0],
+                                      args,
+                                      apply_pixmix=True,
+                                      transform=self.transform_tr,
+                                      k_tfm=k_tfm,
+                                      mode='train',
+                                      combineall=combineall,
+                                      root=root,
+                                      split_id=split_id,
+                                      cuhk03_labeled=cuhk03_labeled,
+                                      cuhk03_classic_split=cuhk03_classic_split,
+                                      market1501_500k=market1501_500k)
+        # trainset = []
+        # for name in self.sources:
+        #     trainset.append(trainset_)
+        # trainset = sum(trainset)
 
         self.trainset = trainset
         self._num_train_pids = trainset.num_train_pids
@@ -220,6 +218,7 @@ class ImageDataManager(DataManager):
             def wif():
                 ss = np.random.SeedSequence([torch.initial_seed()])
                 np.random.seed(ss.generate_state(4))
+
             self.train_loader = torch.utils.data.DataLoader(
                 trainset,
                 sampler=build_train_sampler(

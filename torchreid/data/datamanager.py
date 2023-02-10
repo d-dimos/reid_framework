@@ -210,7 +210,6 @@ class ImageDataManager(DataManager):
                 market1501_500k=market1501_500k
             )
             trainset.append(trainset_)
-            print(trainset_)
         trainset = sum(trainset)
 
         self.trainset = trainset
@@ -232,7 +231,7 @@ class ImageDataManager(DataManager):
                 num_datasets=num_datasets
             ),
             batch_size=batch_size_train,
-            shuffle=True,
+            shuffle=False,
             num_workers=workers,
             pin_memory=self.use_gpu,
             drop_last=True,

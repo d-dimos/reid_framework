@@ -215,7 +215,7 @@ class ImageDataManager(DataManager):
             self._num_train_pids = trainset.dataset.num_train_pids
             self._num_train_cams = trainset.dataset.num_train_cams
 
-            def wif():
+            def wif(_):
                 ss = np.random.SeedSequence([torch.initial_seed()])
                 np.random.seed(ss.generate_state(4))
 

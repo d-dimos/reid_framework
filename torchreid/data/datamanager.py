@@ -1,4 +1,6 @@
 from __future__ import division, print_function, absolute_import
+
+import numpy as np
 import torch
 
 from torchreid.data.sampler import build_train_sampler
@@ -23,15 +25,15 @@ class DataManager(object):
     """
 
     def __init__(
-        self,
-        sources=None,
-        targets=None,
-        height=256,
-        width=128,
-        transforms='random_flip',
-        norm_mean=None,
-        norm_std=None,
-        use_gpu=False
+            self,
+            sources=None,
+            targets=None,
+            height=256,
+            width=128,
+            transforms='random_flip',
+            norm_mean=None,
+            norm_std=None,
+            use_gpu=False
     ):
         self.sources = sources
         self.targets = targets
@@ -151,31 +153,32 @@ class ImageDataManager(DataManager):
     data_type = 'image'
 
     def __init__(
-        self,
-        root='',
-        sources=None,
-        targets=None,
-        height=256,
-        width=128,
-        transforms='random_flip',
-        k_tfm=1,
-        norm_mean=None,
-        norm_std=None,
-        use_gpu=True,
-        split_id=0,
-        combineall=False,
-        load_train_targets=False,
-        batch_size_train=32,
-        batch_size_test=32,
-        workers=4,
-        num_instances=4,
-        num_cams=1,
-        num_datasets=1,
-        train_sampler='RandomSampler',
-        train_sampler_t='RandomSampler',
-        cuhk03_labeled=False,
-        cuhk03_classic_split=False,
-        market1501_500k=False
+            self,
+            args,
+            root='',
+            sources=None,
+            targets=None,
+            height=256,
+            width=128,
+            transforms='random_flip',
+            k_tfm=1,
+            norm_mean=None,
+            norm_std=None,
+            use_gpu=True,
+            split_id=0,
+            combineall=False,
+            load_train_targets=False,
+            batch_size_train=32,
+            batch_size_test=32,
+            workers=4,
+            num_instances=4,
+            num_cams=1,
+            num_datasets=1,
+            train_sampler='RandomSampler',
+            train_sampler_t='RandomSampler',
+            cuhk03_labeled=False,
+            cuhk03_classic_split=False,
+            market1501_500k=False,
     ):
 
         super(ImageDataManager, self).__init__(
@@ -194,6 +197,8 @@ class ImageDataManager(DataManager):
         for name in self.sources:
             trainset_ = init_image_dataset(
                 name,
+                args,
+                apply_pixmix=True,
                 transform=self.transform_tr,
                 k_tfm=k_tfm,
                 mode='train',
@@ -211,6 +216,10 @@ class ImageDataManager(DataManager):
         self._num_train_pids = trainset.num_train_pids
         self._num_train_cams = trainset.num_train_cams
 
+        def wif():  # Fix dataloader worker issue: https://github.com/pytorch/pytorch/issues/5059
+            ss = np.random.SeedSequence([torch.initial_seed()])
+            np.random.seed(ss.generate_state(4))
+
         self.train_loader = torch.utils.data.DataLoader(
             trainset,
             sampler=build_train_sampler(
@@ -222,11 +231,29 @@ class ImageDataManager(DataManager):
                 num_datasets=num_datasets
             ),
             batch_size=batch_size_train,
-            shuffle=False,
+            shuffle=True,
             num_workers=workers,
             pin_memory=self.use_gpu,
-            drop_last=True
+            drop_last=True,
+            worker_init_fn=wif
         )
+
+        # self.train_loader = torch.utils.data.DataLoader(
+        #     trainset,
+        #     sampler=build_train_sampler(
+        #         trainset.train,
+        #         train_sampler,
+        #         batch_size=batch_size_train,
+        #         num_instances=num_instances,
+        #         num_cams=num_cams,
+        #         num_datasets=num_datasets
+        #     ),
+        #     batch_size=batch_size_train,
+        #     shuffle=False,
+        #     num_workers=workers,
+        #     pin_memory=self.use_gpu,
+        #     drop_last=True
+        # )
 
         self.train_loader_t = None
         if load_train_targets:
@@ -239,10 +266,11 @@ class ImageDataManager(DataManager):
             for name in self.targets:
                 trainset_t_ = init_image_dataset(
                     name,
+                    args,
                     transform=self.transform_tr,
                     k_tfm=k_tfm,
                     mode='train',
-                    combineall=False, # only use the training data
+                    combineall=False,  # only use the training data
                     root=root,
                     split_id=split_id,
                     cuhk03_labeled=cuhk03_labeled,
@@ -289,6 +317,7 @@ class ImageDataManager(DataManager):
             # build query loader
             queryset = init_image_dataset(
                 name,
+                args,
                 transform=self.transform_te,
                 mode='query',
                 combineall=combineall,
@@ -310,6 +339,7 @@ class ImageDataManager(DataManager):
             # build gallery loader
             galleryset = init_image_dataset(
                 name,
+                args,
                 transform=self.transform_te,
                 mode='gallery',
                 combineall=combineall,
@@ -410,27 +440,27 @@ class VideoDataManager(DataManager):
     data_type = 'video'
 
     def __init__(
-        self,
-        root='',
-        sources=None,
-        targets=None,
-        height=256,
-        width=128,
-        transforms='random_flip',
-        norm_mean=None,
-        norm_std=None,
-        use_gpu=True,
-        split_id=0,
-        combineall=False,
-        batch_size_train=3,
-        batch_size_test=3,
-        workers=4,
-        num_instances=4,
-        num_cams=1,
-        num_datasets=1,
-        train_sampler='RandomSampler',
-        seq_len=15,
-        sample_method='evenly'
+            self,
+            root='',
+            sources=None,
+            targets=None,
+            height=256,
+            width=128,
+            transforms='random_flip',
+            norm_mean=None,
+            norm_std=None,
+            use_gpu=True,
+            split_id=0,
+            combineall=False,
+            batch_size_train=3,
+            batch_size_test=3,
+            workers=4,
+            num_instances=4,
+            num_cams=1,
+            num_datasets=1,
+            train_sampler='RandomSampler',
+            seq_len=15,
+            sample_method='evenly'
     ):
 
         super(VideoDataManager, self).__init__(

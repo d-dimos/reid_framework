@@ -1,11 +1,18 @@
 from __future__ import print_function, absolute_import
 
+import logging
+
 from .image import (
     GRID, PRID, CUHK01, CUHK02, CUHK03, MSMT17, CUHKSYSU, VIPeR, SenseReID,
     Market1501, DukeMTMCreID, University1652, iLIDS
 )
 from .video import PRID2011, Mars, DukeMTMCVidReID, iLIDSVID
 from .dataset import Dataset, ImageDataset, VideoDataset
+
+from torchvision import transforms
+from torchvision import datasets
+
+from ..pixmix import PixMixDataset
 
 __image_datasets = {
     'market1501': Market1501,
@@ -31,7 +38,7 @@ __video_datasets = {
 }
 
 
-def init_image_dataset(name, **kwargs):
+def init_image_dataset(name, args, apply_pixmix=False, **kwargs):
     """Initializes an image dataset."""
     avai_datasets = list(__image_datasets.keys())
     if name not in avai_datasets:
@@ -39,7 +46,19 @@ def init_image_dataset(name, **kwargs):
             'Invalid dataset name. Received "{}", '
             'but expected to be one of {}'.format(name, avai_datasets)
         )
-    return __image_datasets[name](**kwargs)
+
+    X_dataset = __image_datasets[name](**kwargs)
+
+    if args.mixing_set and apply_pixmix:
+        to_tensor = transforms.ToTensor()
+        normalize = transforms.Normalize([0.5] * 3, [0.5] * 3)
+        mixing_set_transform = transforms.Compose([transforms.Resize(36), transforms.RandomCrop(32)])
+        mixing_set = datasets.ImageFolder(args.mixing_set, transform=mixing_set_transform)
+        X_dataset = PixMixDataset(args, X_dataset, mixing_set, {'normalize': normalize, 'tensorize': to_tensor})
+        logging.info(f'train_size: {len(X_dataset)}')
+        logging.info(f'aug_size: {len(mixing_set)}')
+    else:
+        return X_dataset
 
 
 def init_video_dataset(name, **kwargs):

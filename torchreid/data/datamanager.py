@@ -210,6 +210,7 @@ class ImageDataManager(DataManager):
                 market1501_500k=market1501_500k
             )
             trainset.append(trainset_)
+            print(trainset_)
         trainset = sum(trainset)
 
         self.trainset = trainset

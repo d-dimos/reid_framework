@@ -48,8 +48,6 @@ def init_image_dataset(name, args, apply_pixmix=False, **kwargs):
         )
 
     X_dataset = __image_datasets[name](**kwargs)
-    print(X_dataset)
-    print("HAHAHAHAHAHA")
 
     if args.mixing_set and apply_pixmix:
         to_tensor = transforms.ToTensor()
@@ -61,8 +59,8 @@ def init_image_dataset(name, args, apply_pixmix=False, **kwargs):
         X_dataset = PixMixDataset(args, X_dataset, mixing_set, {'normalize': normalize, 'tensorize': to_tensor})
         logging.info(f'train_size: {len(X_dataset)}')
         logging.info(f'aug_size: {len(mixing_set)}')
-    else:
-        return X_dataset
+
+    return X_dataset
 
 
 def init_video_dataset(name, **kwargs):

@@ -53,8 +53,8 @@ def init_image_dataset(name, args, apply_pixmix=False, **kwargs):
         to_tensor = transforms.ToTensor()
         normalize = transforms.Normalize([0.5] * 3, [0.5] * 3)
         mixing_set_transform = transforms.Compose(
-            [transforms.Resize(args.data.height+4, args.data.width+4),
-             transforms.RandomCrop(args.data.height, args.data.width)])
+            [transforms.Resize( (args.data.height+4, args.data.width+4) ),
+             transforms.RandomCrop( (args.data.height, args.data.width) )])
         mixing_set = datasets.ImageFolder(args.mixing_set, transform=mixing_set_transform)
         X_dataset = PixMixDataset(args, X_dataset, mixing_set, {'normalize': normalize, 'tensorize': to_tensor})
         logging.info(f'train_size: {len(X_dataset)}')

@@ -222,7 +222,7 @@ class ImageDataManager(DataManager):
             self.train_loader = torch.utils.data.DataLoader(
                 trainset,
                 sampler=build_train_sampler(
-                    trainset.train,
+                    trainset.dataset.train,
                     train_sampler,
                     batch_size=batch_size_train,
                     num_instances=num_instances,

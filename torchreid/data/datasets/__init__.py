@@ -48,6 +48,7 @@ def init_image_dataset(name, args, apply_pixmix=False, **kwargs):
         )
 
     X_dataset = __image_datasets[name](**kwargs)
+    print(X_dataset)
 
     if args.mixing_set and apply_pixmix:
         to_tensor = transforms.ToTensor()

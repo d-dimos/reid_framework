@@ -210,11 +210,11 @@ class ImageDataManager(DataManager):
         #     trainset.append(trainset_)
         # trainset = sum(trainset)
 
-        self.trainset = trainset
-        self._num_train_pids = trainset.num_train_pids
-        self._num_train_cams = trainset.num_train_cams
-
         if args.mixing_set:
+            self.trainset = trainset
+            self._num_train_pids = trainset.dataset.num_train_pids
+            self._num_train_cams = trainset.dataset.num_train_cams
+
             def wif():
                 ss = np.random.SeedSequence([torch.initial_seed()])
                 np.random.seed(ss.generate_state(4))
@@ -237,6 +237,10 @@ class ImageDataManager(DataManager):
                 worker_init_fn=wif  # Fix dataloader worker issue: https://github.com/pytorch/pytorch/issues/5059
             )
         else:
+            self.trainset = trainset
+            self._num_train_pids = trainset.num_train_pids
+            self._num_train_cams = trainset.num_train_cams
+
             self.train_loader = torch.utils.data.DataLoader(
                 trainset,
                 sampler=build_train_sampler(

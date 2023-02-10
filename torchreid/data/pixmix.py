@@ -45,8 +45,10 @@ def pixmix(args, orig, mixing_pic, preprocess):
 
     for _ in range(np.random.randint(args.mix_iters + 1)):
         if np.random.random() < 0.5:
+            print("augmented orig")
             aug_image_copy = tensorize(augment_input(args, orig))
         else:
+            print("mixing pic")
             aug_image_copy = tensorize(mixing_pic)
 
         print("TWOTWOTWO")

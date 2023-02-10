@@ -50,7 +50,7 @@ def pixmix(args, orig, mixing_pic, preprocess):
             augmented_orig___ = False
             aug_image_copy = tensorize(mixing_pic)
 
-        print(f"TWOTWOTWO {aug_image_copy.shape}, augmented orig = {augmented_orig___}")
+        print(f"TWOTWOTWO {aug_image_copy.shape}, augmented orig = {augmented_orig___}, orig_shape={tensorize(orig).shape}")
 
         mixed_op = np.random.choice(mixings)
         mixed = mixed_op(mixed, aug_image_copy, args.beta)

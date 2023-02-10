@@ -216,44 +216,44 @@ class ImageDataManager(DataManager):
         self._num_train_pids = trainset.num_train_pids
         self._num_train_cams = trainset.num_train_cams
 
-        def wif():  # Fix dataloader worker issue: https://github.com/pytorch/pytorch/issues/5059
-            ss = np.random.SeedSequence([torch.initial_seed()])
-            np.random.seed(ss.generate_state(4))
-
-        self.train_loader = torch.utils.data.DataLoader(
-            trainset,
-            sampler=build_train_sampler(
-                trainset.train,
-                train_sampler,
+        if args.mixing_set:
+            def wif():
+                ss = np.random.SeedSequence([torch.initial_seed()])
+                np.random.seed(ss.generate_state(4))
+            self.train_loader = torch.utils.data.DataLoader(
+                trainset,
+                sampler=build_train_sampler(
+                    trainset.train,
+                    train_sampler,
+                    batch_size=batch_size_train,
+                    num_instances=num_instances,
+                    num_cams=num_cams,
+                    num_datasets=num_datasets
+                ),
                 batch_size=batch_size_train,
-                num_instances=num_instances,
-                num_cams=num_cams,
-                num_datasets=num_datasets
-            ),
-            batch_size=batch_size_train,
-            shuffle=False,
-            num_workers=workers,
-            pin_memory=self.use_gpu,
-            drop_last=True,
-            worker_init_fn=wif
-        )
-
-        # self.train_loader = torch.utils.data.DataLoader(
-        #     trainset,
-        #     sampler=build_train_sampler(
-        #         trainset.train,
-        #         train_sampler,
-        #         batch_size=batch_size_train,
-        #         num_instances=num_instances,
-        #         num_cams=num_cams,
-        #         num_datasets=num_datasets
-        #     ),
-        #     batch_size=batch_size_train,
-        #     shuffle=False,
-        #     num_workers=workers,
-        #     pin_memory=self.use_gpu,
-        #     drop_last=True
-        # )
+                shuffle=False,
+                num_workers=workers,
+                pin_memory=self.use_gpu,
+                drop_last=True,
+                worker_init_fn=wif  # Fix dataloader worker issue: https://github.com/pytorch/pytorch/issues/5059
+            )
+        else:
+            self.train_loader = torch.utils.data.DataLoader(
+                trainset,
+                sampler=build_train_sampler(
+                    trainset.train,
+                    train_sampler,
+                    batch_size=batch_size_train,
+                    num_instances=num_instances,
+                    num_cams=num_cams,
+                    num_datasets=num_datasets
+                ),
+                batch_size=batch_size_train,
+                shuffle=False,
+                num_workers=workers,
+                pin_memory=self.use_gpu,
+                drop_last=True
+            )
 
         self.train_loader_t = None
         if load_train_targets:

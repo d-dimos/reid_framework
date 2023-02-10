@@ -126,7 +126,7 @@ def shear_x(pil_img, level):
     level = float_parameter(sample_level(level), 0.3)
     if np.random.uniform() > 0.5:
         level = -level
-    return pil_img.transform((HEIGHT, WIDTH),
+    return pil_img.transform((WIDTH, HEIGHT),
                              Image.AFFINE, (1, level, 0, 0, 1, 0),
                              resample=Image.BILINEAR)
 
@@ -135,7 +135,7 @@ def shear_y(pil_img, level):
     level = float_parameter(sample_level(level), 0.3)
     if np.random.uniform() > 0.5:
         level = -level
-    return pil_img.transform((HEIGHT, WIDTH),
+    return pil_img.transform((WIDTH, HEIGHT),
                              Image.AFFINE, (1, 0, 0, level, 1, 0),
                              resample=Image.BILINEAR)
 
@@ -144,7 +144,7 @@ def translate_x(pil_img, level):
     level = int_parameter(sample_level(level), WIDTH / 3)
     if np.random.random() > 0.5:
         level = -level
-    return pil_img.transform((HEIGHT, WIDTH),
+    return pil_img.transform((WIDTH, HEIGHT),
                              Image.AFFINE, (1, 0, level, 0, 1, 0),
                              resample=Image.BILINEAR)
 
@@ -153,7 +153,7 @@ def translate_y(pil_img, level):
     level = int_parameter(sample_level(level), HEIGHT / 3)
     if np.random.random() > 0.5:
         level = -level
-    return pil_img.transform((HEIGHT, WIDTH),
+    return pil_img.transform((WIDTH, HEIGHT),
                              Image.AFFINE, (1, 0, 0, 0, 1, level),
                              resample=Image.BILINEAR)
 

@@ -1,7 +1,8 @@
 import numpy as np
 import torch
 from torchvision import transforms
-import pixmix_utils as utils
+
+from reid_framework.torchreid.data import pixmix_utils as utils
 
 
 class PixMixDataset(torch.utils.data.Dataset):

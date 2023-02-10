@@ -195,8 +195,6 @@ class ImageDataManager(DataManager):
         print('=> Loading train (source) dataset')
         trainset = []
         for name in self.sources:
-            print(name)
-            print("HAHAHAHAHAH")
             trainset_ = init_image_dataset(
                 name,
                 args,

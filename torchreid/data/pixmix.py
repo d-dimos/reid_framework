@@ -47,6 +47,8 @@ def pixmix(args, orig, mixing_pic, preprocess):
             aug_image_copy = tensorize(mixing_pic)
 
         mixed_op = np.random.choice(mixings)
+        print(mixed.shape)
+        print(aug_image_copy.shape)
         mixed = mixed_op(mixed, aug_image_copy, args.beta)
         mixed = torch.clip(mixed, 0, 1)
 
@@ -57,4 +59,3 @@ def augment_input(args, image):
     aug_list = utils.augmentations_all if args.all_ops else utils.augmentations
     op = np.random.choice(aug_list)
     return op(image.copy(), args.aug_severity)
-    # return op(image.clone(), args.aug_severity)

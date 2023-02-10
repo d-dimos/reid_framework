@@ -40,6 +40,7 @@ def pixmix(args, orig, mixing_pic, preprocess):
     else:
         mixed = tensorize(orig)
 
+    print("ONEONEONEON")
     print(mixed.shape)
 
     for _ in range(np.random.randint(args.mix_iters + 1)):
@@ -48,6 +49,7 @@ def pixmix(args, orig, mixing_pic, preprocess):
         else:
             aug_image_copy = tensorize(mixing_pic)
 
+        print("TWOTWOTWO")
         print(aug_image_copy.shape)
 
         mixed_op = np.random.choice(mixings)

@@ -15,7 +15,13 @@ class PixMixDataset(torch.utils.data.Dataset):
         self.args = args
 
     def __getitem__(self, i):
-        x, y = self.dataset[i]
+
+        if self.args.data.category == 'digits':
+            x, y = self.dataset[i]
+        elif self.args.data.category == 'person':
+            x = self.dataset[i]['img']
+            y = self.dataset[i]['pid']
+
         rnd_idx = np.random.choice(len(self.mixing_set))
         mixing_pic, _ = self.mixing_set[rnd_idx]
         trans = transforms.ToPILImage()

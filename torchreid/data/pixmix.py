@@ -22,7 +22,7 @@ class PixMixDataset(torch.utils.data.Dataset):
 
     def __getitem__(self, i):
 
-        if self.args.data.category == 'digits':
+        if self.args.data.category in ['digits', 'cifar10']:
             x, y = self.dataset[i]
         elif self.args.data.category == 'person':
             x = self.dataset[i]['img']

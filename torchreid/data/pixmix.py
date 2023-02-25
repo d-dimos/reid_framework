@@ -30,8 +30,10 @@ class PixMixDataset(torch.utils.data.Dataset):
 
         rnd_idx = np.random.choice(len(self.mixing_set))
         mixing_pic, _ = self.mixing_set[rnd_idx]
-        trans = transforms.ToPILImage()
-        x = trans(x)
+        if self.args.data.category != 'cifar10':
+            trans = transforms.ToPILImage()
+            x = trans(x)
+
         return pixmix(self.args, x, mixing_pic, self.preprocess), y
 
     def __len__(self):

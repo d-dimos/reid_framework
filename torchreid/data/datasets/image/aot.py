@@ -5,7 +5,7 @@ from __future__ import print_function
 import os
 import os.path as osp
 
-from torchreid.data import ImageDataset
+from ..dataset import ImageDataset
 
 
 class AOTDataset(ImageDataset):
